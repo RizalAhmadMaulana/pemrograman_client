@@ -99,7 +99,7 @@ const Mahasiswa = () => {
         <Card>
             <div className="flex justify-between items-center mb-4">
                 <Heading as="h2" className="mb-0 text-left">Daftar Mahasiswa</Heading>
-                {/* PERBAIKAN: Panggil openAddModal */}
+                {/* Panggil openAddModal */}
                 <Button onClick={openAddModal}>+ Tambah Mahasiswa</Button> 
             </div>
 
@@ -112,7 +112,7 @@ const Mahasiswa = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* PERBAIKAN: Menggunakan state mahasiswa */}
+                    {/* Menggunakan state mahasiswa */}
                     {mahasiswa.map((mhs, index) => ( 
                         <tr
                             key={mhs.nim}
@@ -130,7 +130,6 @@ const Mahasiswa = () => {
                                 <Button
                                     size="sm"
                                     variant="warning"
-                                    // PERBAIKAN: Kirim objek mhs
                                     onClick={() => handleEdit(mhs)} 
                                 >
                                     Edit
@@ -148,7 +147,6 @@ const Mahasiswa = () => {
                 </tbody>
             </table>
 
-            {/* Modal Form Tambah/Edit (Dipindahkan ke dalam return) */}
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.3)] z-50">
                     <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
