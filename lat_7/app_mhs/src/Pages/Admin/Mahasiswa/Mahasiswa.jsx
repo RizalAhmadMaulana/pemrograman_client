@@ -10,6 +10,12 @@ import ModalMahasiswa from "./ModalMahasiswa"; // <-- Import Komponen Anak
 import { mahasiswaList } from "@/Data/Dummy";
 import { useNavigate } from "react-router-dom";
 
+import {
+    confirmDelete,
+    confirmUpdate,
+} from "@/Utils/Helpers/SwalHelpers";
+  import { toastSuccess } from "@/Utils/Helpers/ToastHelpers";
+
 const Mahasiswa = () => {
     const navigate = useNavigate();
 
@@ -53,27 +59,39 @@ const Mahasiswa = () => {
         setIsEdit(true);
         setIsModalOpen(true);
     };
-    const handleDelete = (nim) => { 
-        if (confirm("Yakin ingin hapus data ini?")) {
-            deleteMahasiswa(nim);
-        }
+    const handleDelete = (nim) => {
+        confirmDelete(() => {
+          deleteMahasiswa(nim);
+          toastSuccess("Data berhasil dihapus");
+        });
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!form.nim || !form.nama) { alert("NIM dan Nama wajib diisi"); return; }
-
-        if (isEdit) {
-            updateMahasiswa(form.nim, form);
-        } else {
-            const exists = mahasiswa.find((m) => m.nim === form.nim);
-            if (exists) { alert("NIM sudah terdaftar!"); return; }
-            addMahasiswa(form);
+        if (!form.nim || !form.nama) {
+          toastError("NIM dan Nama wajib diisi");
+          return;
         }
-
-        setForm({ nim: "", nama: "" });
-        setIsEdit(false);
-        setIsModalOpen(false);
-    }
+      
+        if (isEdit) {
+          confirmUpdate(() => {
+            updateMahasiswa(form.nim, form);
+            toastSuccess("Data berhasil diperbarui");
+            setForm({ nim: "", nama: "" });
+            setIsEdit(false);
+            setIsModalOpen(false);
+          });
+        } else {
+          const exists = mahasiswa.find((m) => m.nim === form.nim);
+          if (exists) {
+            toastError("NIM sudah terdaftar!");
+            return;
+          }
+          addMahasiswa(form);
+          toastSuccess("Data berhasil ditambahkan");
+          setForm({ nim: "", nama: "" });
+          setIsModalOpen(false);
+        }
+    };
 
     // --- RETURN JSX BARU ---
     return (
