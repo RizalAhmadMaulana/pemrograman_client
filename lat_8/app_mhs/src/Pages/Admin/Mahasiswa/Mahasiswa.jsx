@@ -17,7 +17,6 @@ import {
     toastError 
 } from "@/Utils/Helpers/ToastHelpers";
 
-// Import semua fungsi API dari MahasiswaApi.jsx
 import {
     getAllMahasiswa,
     storeMahasiswa,
@@ -37,9 +36,7 @@ const Mahasiswa = () => {
     // --- FUNGSI FETCH DATA (GET) ---
     const fetchMahasiswa = async () => {
         try {
-            // Panggil API dan ambil data
             const res = await getAllMahasiswa();
-            // Data dari JSON Server ada di res.data
             setMahasiswa(res.data); 
         } catch (error) {
             console.error("Gagal mengambil data mahasiswa:", error);
@@ -64,7 +61,6 @@ const Mahasiswa = () => {
     }
     
     const openEditModal = (mhs) => { 
-        // Mengisi form dengan data mahasiswa yang akan diedit
         setForm({ 
             id: mhs.id, 
             nim: mhs.nim, 
@@ -75,11 +71,9 @@ const Mahasiswa = () => {
     };
 
     const handleDelete = (id) => { 
-        confirmDelete(async () => { // Jadikan fungsi callback ASYNC
+        confirmDelete(async () => {
             try {
-                // Panggil API delete
                 await deleteMahasiswa(id);
-                // Muat ulang data
                 await fetchMahasiswa();
                 toastSuccess("Data berhasil dihapus");
             } catch (error) {
@@ -89,7 +83,7 @@ const Mahasiswa = () => {
         });
     };
 
-    const handleSubmit = async (e) => { // JADIKAN FUNGSI INI ASYNC
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
         if (!form.nim || !form.nama) {
@@ -98,12 +92,10 @@ const Mahasiswa = () => {
         }
 
         if (isEdit) {
-            // LOGIKA UPDATE
-            confirmUpdate(async () => { // Jadikan fungsi callback ASYNC
+            confirmUpdate(async () => {
                 try {
-                    // Panggil updateMahasiswa dengan ID dan data form
                     await updateMahasiswa(form.id, form);
-                    await fetchMahasiswa(); // Muat ulang data
+                    await fetchMahasiswa();
                     toastSuccess("Data berhasil diperbarui");
                     setForm({ id: null, nim: "", nama: "" });
                     setIsEdit(false);
@@ -116,7 +108,7 @@ const Mahasiswa = () => {
         } else {
             try {
                 await storeMahasiswa(form);
-                await fetchMahasiswa(); // Muat ulang data
+                await fetchMahasiswa();
                 toastSuccess("Data berhasil ditambahkan");
                 setForm({ id: null, nim: "", nama: "" });
                 setIsModalOpen(false);
@@ -127,7 +119,6 @@ const Mahasiswa = () => {
         }
     };
 
-    // --- RETURN JSX ---
     return (
         <Card>
             <div className="flex justify-between items-center mb-4">
@@ -139,7 +130,7 @@ const Mahasiswa = () => {
                 data={mahasiswa} 
                 onEdit={openEditModal}
                 onDelete={handleDelete} 
-                onDetail={(mhs) => navigate(`/admin/mahasiswa/${mhs.id}`)} 
+                onDetail={(id) => navigate(`/admin/mahasiswa/${id}`)}
             />
 
             <ModalMahasiswa

@@ -24,9 +24,8 @@ const MahasiswaDetail = () => {
             setMahasiswa(res.data);
         } catch (err) {
             console.error("Gagal mengambil data mahasiswa: ", err);
-            // Penanganan 404 sederhana (jika tidak ditemukan)
             if (err.response && err.response.status === 404) {
-                 setMahasiswa(null); // Memastikan state mahasiswa null
+                 setMahasiswa(null);
             }
             toastError("Gagal mengambil data mahasiswa: ", err);
         } finally {
