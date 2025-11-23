@@ -2,18 +2,18 @@
   "mahasiswa": [
     {
       "id": "1",
-      "nim": "A11.2020.00001",
-      "nama": "Andi"
+      "nama": "Andi",
+      "nim": "A11.2020.00001"
     },
     {
       "id": "2",
-      "nama": "Budi",
-      "nim": "A11.2020.00002"
+      "nim": "A11.2020.00002",
+      "nama": "Budiono"
     },
     {
       "id": null,
       "nim": "A11.2023.14974",
-      "nama": "Rizal Ahmad"
+      "nama": "Rizal Ahmad M"
     }
   ],
   "user": [
