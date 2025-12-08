@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import Input from "@/Pages/Layouts/Components/Input";
 import Label from "@/Pages/Layouts/Components/Label";
 import Button from "@/Pages/Layouts/Components/Button";
@@ -7,13 +7,20 @@ import Link from "@/Pages/Layouts/Components/Link";
 import Card from "@/Pages/Layouts/Components/Card";
 import Heading from "@/Pages/Layouts/Components/Heading";
 import Form from "@/Pages/Layouts/Components/Form";
-
-import { dummyUser } from "@/Data/Dummy";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
-import { login } from "@/Utils/Apis/AuthApi";
+
+// 1. IMPORT DARI CONTEXT DAN API
+import { login as apiLogin } from "@/Utils/Apis/AuthApi"; 
+import { useAuthStateContext } from "@/Utils/Contexts/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  
+  // 2. AMBIL USER DAN SETTER DARI CONTEXT
+  const { user, setUser } = useAuthStateContext();
+
+  // 3. REDIRECT JIKA SUDAH LOGIN
+  if (user) return <Navigate to="/admin/dashboard" replace />;
 
   const [form, setForm] = useState({
     email: "",
@@ -25,18 +32,27 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  const { email, password } = form;
+    e.preventDefault();
+    const { email, password } = form;
 
-  try {
-    const user = await login(email, password);
-    localStorage.setItem("user", JSON.stringify(user));
-    toastSuccess("Login berhasil");
-    navigate("/admin/dashboard");
-  } catch (err) {
-    toastError(err.message);
-  }
-};
+    try {
+      // 4. PANGGIL API LOGIN
+      const userData = await apiLogin(email, password);
+      
+      // 5. UPDATE CONTEXT (PENTING!)
+      setUser(userData); 
+      
+      toastSuccess("Login berhasil");
+      
+      // Beri sedikit jeda agar Context terupdate sebelum navigasi
+      setTimeout(() => {
+        navigate("/admin/dashboard");
+      }, 10);
+      
+    } catch (err) {
+      toastError(err.message);
+    }
+  };
 
   return (
     <Card className="max-w-md">
@@ -65,23 +81,18 @@ const Login = () => {
           />
         </div>
         <div className="flex justify-between items-center">
-          <label className="flex items-center">
-            <input type="checkbox" className="mr-2" />
-            <span className="text-sm text-gray-600">Ingat saya</span>
-          </label>
-          <Link href="#" className="text-sm">
-            Lupa password?
-          </Link>
+            {/* ... checkbox ... */}
+            <Link href="#" className="text-sm">Lupa password?</Link>
         </div>
         <Button type="submit" className="w-full">
           Login
         </Button>
       </Form>
       <p className="text-sm text-center text-gray-600 mt-4">
-        Belum punya akun? <Link href="#">Daftar</Link>
+        Belum punya akun? <Link href="/register">Daftar</Link>
       </p>
     </Card>
   );
 };
 
-export default Login
+export default Login;

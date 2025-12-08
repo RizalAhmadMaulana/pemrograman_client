@@ -1,7 +1,9 @@
 import Button from "@/Pages/Layouts/Components/Button";
 import { confirmLogout } from "@/Utils/Helpers/SwalHelpers";
+import { useAuthStateContext } from "@/Utils/Contexts/AuthContext";
 
 const Header = () => {
+  const { user, setUser } = useAuthStateContext();
   const toggleProfileMenu = () => {
     const menu = document.getElementById("profileMenu");
     if (menu) menu.classList.toggle("hidden");
@@ -9,7 +11,7 @@ const Header = () => {
 
   const handleLogout = () => {
     confirmLogout(() => {
-      localStorage.removeItem("user");
+      setUser(null); 
       location.href = "/";
     });
   };

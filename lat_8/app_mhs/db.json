@@ -1,4 +1,17 @@
 {
+  "dosen": [
+    {
+      "id": "1",
+      "nip": "12345678",
+      "nama": "Dr. Risa Wijayanti A"
+    },
+    {
+      "id": "2",
+      "nip": "87654321",
+      "nama": "Prof. Ari Santoso",
+      "prodi": "Sistem Informasi"
+    }
+  ],
   "mahasiswa": [
     {
       "id": "1",
@@ -7,13 +20,22 @@
     },
     {
       "id": "2",
-      "nim": "A11.2020.00002",
-      "nama": "Budiono"
+      "nama": "Budi",
+      "nim": "A11.2020.00002"
+    }
+  ],
+  "matakuliah": [
+    {
+      "id": "1",
+      "kode": "PCL001",
+      "nama": "Pemrograman Client",
+      "sks": 3
     },
     {
-      "id": null,
-      "nim": "A11.2023.14974",
-      "nama": "Rizal Ahmad M"
+      "id": "2",
+      "kode": "JST101",
+      "nama": "Jaringan Komputer",
+      "sks": 3
     }
   ],
   "user": [
@@ -28,6 +50,16 @@
       "name": "Mahasiswa 1",
       "email": "mahasiswa@mail.com",
       "password": "mahasiswa123"
+    },
+    {
+      "id": "d203",
+      "name": "Rizal Ahmad M",
+      "email": "rizalram100@gmail.com",
+      "password": "rizal123",
+      "role": "mahasiswa",
+      "permission": [
+        "dashboard.page"
+      ]
     }
   ]
 }

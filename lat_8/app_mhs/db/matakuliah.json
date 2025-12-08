@@ -1,0 +1,4 @@
+[
+  { "id": 1, "kode": "PCL001", "nama": "Pemrograman Client", "sks": 3 },
+  { "id": 2, "kode": "JST101", "nama": "Jaringan Komputer", "sks": 3 }
+]

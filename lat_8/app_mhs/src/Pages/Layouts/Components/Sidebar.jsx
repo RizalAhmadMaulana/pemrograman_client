@@ -29,6 +29,28 @@ const Sidebar = () => {
           <span>🎓</span>
           <span className="menu-text hidden lg:inline">Mahasiswa</span>
         </NavLink>
+        <NavLink
+          to="/admin/dosen"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>🧑‍🏫</span>
+          <span className="menu-text hidden lg:inline">Dosen</span>
+        </NavLink>
+        <NavLink
+          to="/admin/matakuliah"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>📖</span>
+          <span className="menu-text hidden lg:inline">Mata Kuliah</span>
+        </NavLink>
       </nav>
     </aside>
   );
