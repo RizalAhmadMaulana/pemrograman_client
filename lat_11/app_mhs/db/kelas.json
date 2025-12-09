@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "kode_kelas": "4412",
+    "nama_kelas": "A11.4403",
+    "jam_mulai": "07:00",
+    "jam_selesai": "08:40",
+    "hari": "Senin",
+    "matkul": "Pemrograman Client"
+  },
+  {
+    "id": 2,
+    "kode_kelas": "4413",
+    "nama_kelas": "A11.4404",
+    "jam_mulai": "08:40",
+    "jam_selesai": "10:20",
+    "hari": "Selasa",
+    "matkul": "Jaringan Komputer"
+  }
+]
