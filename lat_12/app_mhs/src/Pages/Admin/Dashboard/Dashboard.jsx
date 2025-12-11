@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "@/Pages/Layouts/Components/Card"; // Pakai komponen Card punya kamu
+import Card from "@/Pages/Layouts/Components/Card";
 import Heading from "@/Pages/Layouts/Components/Heading";
 import {
   BarChart, Bar,
@@ -14,10 +14,8 @@ import { useChartData } from "@/Utils/Hooks/useChart";
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
 
 const Dashboard = () => {
-  // Panggil Hook
   const { data = {}, isLoading } = useChartData();
 
-  // Destructuring data dari JSON
   const {
     students = [],
     genderRatio = [],
@@ -32,10 +30,7 @@ const Dashboard = () => {
     <div className="space-y-6">
       <Heading as="h2" className="text-left mb-4">Dashboard Akademik</Heading>
 
-      {/* --- ROW 1: BAR CHART & PIE CHART --- */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        {/* 1. Bar Chart: Mahasiswa per Fakultas */}
         <Card className="p-4">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Mahasiswa per Fakultas</h3>
           <div className="h-72 w-full">
@@ -52,7 +47,6 @@ const Dashboard = () => {
           </div>
         </Card>
 
-        {/* 2. Pie Chart: Rasio Gender */}
         <Card className="p-4">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Rasio Gender</h3>
           <div className="h-72 w-full">
@@ -81,10 +75,7 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      {/* --- ROW 2: LINE CHART & RADAR CHART --- */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        {/* 3. Line Chart: Tren Pendaftaran */}
         <Card className="p-4">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Tren Pendaftaran Mahasiswa</h3>
           <div className="h-72 w-full">
@@ -101,7 +92,6 @@ const Dashboard = () => {
           </div>
         </Card>
 
-        {/* 4. Radar Chart: Jabatan Dosen (Bonus Variasi) */}
         <Card className="p-4">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Distribusi Jabatan Dosen</h3>
           <div className="h-72 w-full">

@@ -23,7 +23,6 @@ const ModalMahasiswa = ({ isOpen, isEdit, form, onChange, onClose, onSubmit }) =
             <Label htmlFor="name">Nama</Label>
             <Input type="text" name="name" value={form.name} onChange={onChange} placeholder="Masukkan Nama" required />
           </div>
-          {/* INPUT BARU MAX SKS */}
           <div>
             <Label htmlFor="max_sks">Max SKS</Label>
             <Input type="number" name="max_sks" value={form.max_sks} onChange={onChange} placeholder="Masukkan Max SKS" required />

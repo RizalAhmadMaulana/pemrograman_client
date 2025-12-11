@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@/Pages/Layouts/Components/Button";
 import Select from "@/Pages/Layouts/Components/Select";
+import { useAuthStateContext } from "@/Utils/Contexts/AuthContext";
 
 export default function TableRencanaStudi({
   kelas,
@@ -16,38 +17,46 @@ export default function TableRencanaStudi({
   handleChangeDosen,
   handleDeleteKelas
 }) {
+  const { user } = useAuthStateContext();
 
   return (
     <div className="space-y-6">
       {kelas.map((kls) => {
-        // Cari nama matkul (ingat ID bisa string/number, jadi convert ke String biar aman)
+        const mahasiswaIds = kls.mahasiswa_ids || [];
+
         const matkul = mataKuliah.find(m => String(m.id) === String(kls.mata_kuliah_id));
         const dosenPengampu = dosen.find(d => String(d.id) === String(kls.dosen_id));
-        const mhsInClass = kls.mahasiswa_ids.map(id => mahasiswa.find(m => String(m.id) === String(id))).filter(Boolean);
+        
+        const mhsInClass = mahasiswaIds.map(id => mahasiswa.find(m => String(m.id) === String(id))).filter(Boolean);
 
         return (
           <div key={kls.id} className="border rounded shadow bg-white">
-            {/* Header Kelas */}
             <div className="flex justify-between items-center px-4 py-3 border-b bg-gray-50">
               <div>
-                {/* Tampilkan Nama Matkul (sesuaikan field di db kamu: name atau nama) */}
-                <h3 className="text-lg font-semibold">{matkul?.name || matkul?.nama || "Matkul Tidak Ditemukan"}</h3>
+                <h3 className="text-lg font-semibold">{matkul?.name || matkul?.nama || kls.matkul || "Matkul Tidak Ditemukan"}</h3>
                 <p className="text-sm text-gray-600">Dosen: <strong>{dosenPengampu?.name || dosenPengampu?.nama || "-"}</strong></p>
+                <p className="text-xs text-gray-500">{kls.kode_kelas} - {kls.nama_kelas}</p>
               </div>
+              
               <div className="flex items-center gap-2">
-                <Select
-                  value={selectedDsn[kls.id] || ""}
-                  onChange={(e) => setSelectedDsn({ ...selectedDsn, [kls.id]: e.target.value })}
-                  size="sm"
-                  className="w-48"
-                >
-                  <option value="">-- Ganti Dosen --</option>
-                  {dosen.map(d => (
-                    <option key={d.id} value={d.id}>{d.name || d.nama}</option>
-                  ))}
-                </Select>
-                <Button size="sm" onClick={() => handleChangeDosen(kls)}>Simpan</Button>
-                {mhsInClass.length === 0 && (
+                {user.permission.includes("kelas.update") && (
+                  <>
+                    <Select
+                      value={selectedDsn[kls.id] || ""}
+                      onChange={(e) => setSelectedDsn({ ...selectedDsn, [kls.id]: e.target.value })}
+                      size="sm"
+                      className="w-48"
+                    >
+                      <option value="">-- Ganti Dosen --</option>
+                      {dosen.map(d => (
+                        <option key={d.id} value={d.id}>{d.name || d.nama}</option>
+                      ))}
+                    </Select>
+                    <Button size="sm" onClick={() => handleChangeDosen(kls)}>Simpan</Button>
+                  </>
+                )}
+
+                {mhsInClass.length === 0 && user.permission.includes("kelas.delete") && (
                   <Button size="sm" variant="danger" onClick={() => handleDeleteKelas(kls.id)}>
                     Hapus Kelas
                   </Button>
@@ -55,7 +64,6 @@ export default function TableRencanaStudi({
               </div>
             </div>
 
-            {/* Tabel Mahasiswa */}
             <table className="w-full text-sm">
               <thead className="bg-blue-600 text-white">
                 <tr>
@@ -69,9 +77,11 @@ export default function TableRencanaStudi({
               <tbody>
                 {mhsInClass.length > 0 ? (
                   mhsInClass.map((m, i) => {
-                    // Logic Hitung Total SKS Mahasiswa
                     const totalSks = kelas
-                      .filter(k => k.mahasiswa_ids.includes(m.id) || k.mahasiswa_ids.includes(String(m.id)) || k.mahasiswa_ids.includes(parseInt(m.id)))
+                      .filter(k => {
+                          const kIds = k.mahasiswa_ids || [];
+                          return kIds.includes(m.id) || kIds.includes(String(m.id)) || kIds.includes(parseInt(m.id));
+                      })
                       .map(k => mataKuliah.find(mk => String(mk.id) === String(k.mata_kuliah_id))?.sks || 0)
                       .reduce((a, b) => a + b, 0);
 
@@ -82,9 +92,11 @@ export default function TableRencanaStudi({
                         <td className="py-2 px-4">{m.nim}</td>
                         <td className="py-2 px-4 text-center">{totalSks}</td>
                         <td className="py-2 px-4 text-center">
-                          <Button size="sm" variant="danger" onClick={() => handleDeleteMahasiswa(kls, m.id)}>
-                            Hapus
-                          </Button>
+                          {user.permission.includes("rencana-studi.delete") && (
+                            <Button size="sm" variant="danger" onClick={() => handleDeleteMahasiswa(kls, m.id)}>
+                              Hapus
+                            </Button>
+                          )}
                         </td>
                       </tr>
                     );
@@ -99,23 +111,24 @@ export default function TableRencanaStudi({
               </tbody>
             </table>
 
-            {/* Footer Tambah */}
-            <div className="flex items-center gap-2 px-4 py-3 border-t bg-gray-50">
-              <Select
-                value={selectedMhs[kls.id] || ""}
-                onChange={(e) => setSelectedMhs({ ...selectedMhs, [kls.id]: e.target.value })}
-                size="sm"
-                className="w-56"
-              >
-                <option value="">-- Pilih Mahasiswa --</option>
-                {mahasiswa.map((m) => (
-                  <option key={m.id} value={m.id}>{m.name || m.nama} ({m.nim})</option>
-                ))}
-              </Select>
-              <Button size="sm" onClick={() => handleAddMahasiswa(kls, selectedMhs[kls.id])}>
-                Tambah Mahasiswa
-              </Button>
-            </div>
+            {user.permission.includes("rencana-studi.create") && (
+              <div className="flex items-center gap-2 px-4 py-3 border-t bg-gray-50">
+                <Select
+                  value={selectedMhs[kls.id] || ""}
+                  onChange={(e) => setSelectedMhs({ ...selectedMhs, [kls.id]: e.target.value })}
+                  size="sm"
+                  className="w-56"
+                >
+                  <option value="">-- Pilih Mahasiswa --</option>
+                  {mahasiswa.map((m) => (
+                    <option key={m.id} value={m.id}>{m.name || m.nama} ({m.nim})</option>
+                  ))}
+                </Select>
+                <Button size="sm" onClick={() => handleAddMahasiswa(kls, selectedMhs[kls.id])}>
+                  Tambah Mahasiswa
+                </Button>
+              </div>
+            )}
           </div>
         );
       })}

@@ -63,10 +63,20 @@ const Kelas = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Data default biar Rencana Studi gak bingung
+        const defaultData = {
+            mata_kuliah_id: null, // Gak ada relasi ID
+            dosen_id: null,       // Gak ada relasi ID
+            mahasiswa_ids: []
+        };
+
         if (isEdit) {
             confirmUpdate(() => mutationUpdate.mutate({ id: form.id, data: form }, { onSuccess: () => setIsModalOpen(false) }));
         } else {
-            mutationStore.mutate(form, { onSuccess: () => setIsModalOpen(false) });
+            // Gabungkan data form dengan data default
+            const newData = { ...defaultData, ...form };
+            mutationStore.mutate(newData, { onSuccess: () => setIsModalOpen(false) });
         }
     };
 

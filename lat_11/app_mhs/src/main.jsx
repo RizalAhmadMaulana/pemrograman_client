@@ -4,12 +4,10 @@ import { Navigate, createBrowserRouter, RouterProvider } from "react-router-dom"
 
 import './App.css';
 
-// --- AUTH & LAYOUTS ---
 import AuthLayout from "@/Pages/Layouts/AuthLayout";
 import AdminLayout from "@/Pages/Layouts/AdminLayout";
 import ProtectedRoute from "@/Pages/Layouts/Components/ProtectedRoute";
 
-//Impor AuthProvider DARI FILE AuthContext.jsx
 import { AuthProvider } from "@/Utils/Contexts/AuthContext"; 
 
 import Login from "@/Pages/Auth/Login/Login";

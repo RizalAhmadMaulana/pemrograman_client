@@ -20,14 +20,14 @@ const Dosen = () => {
     const navigate = useNavigate();
     const { user } = useAuthStateContext();
 
-    // 1. STATE
+    // STATE
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
-    const [sortBy, setSortBy] = useState("nama");
+    const [sortBy, setSortBy] = useState("name");
     const [sortOrder, setSortOrder] = useState("asc");
     const [search, setSearch] = useState("");
 
-    // 2. HOOK
+    // HOOK
     const {
         data: result = { data: [], total: 0 },
         isLoading: isLoadingDosen,
@@ -39,7 +39,7 @@ const Dosen = () => {
         _limit: limit,
     });
 
-    // 3. DATA
+    // DATA
     const { data: dosen } = result;
     const totalItems = result.total;
     const totalPages = Math.ceil(totalItems / limit);
@@ -52,16 +52,16 @@ const Dosen = () => {
     // UI State
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false); 
-    const [form, setForm] = useState({ id: null, nip: "", nama: "" });
+    const [form, setForm] = useState({ id: null, nip: "", name: "" });
 
-    // 4. HANDLERS
+    // HANDLERS
     const handlePrev = () => setPage((prev) => Math.max(prev - 1, 1));
     const handleNext = () => setPage((prev) => Math.min(prev + 1, totalPages));
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
     
-    const openAddModal = () => { setIsModalOpen(true); setForm({ id: null, nip: "", nama: "" }); setIsEdit(false); };
-    const openEditModal = (dsn) => { setForm({ id: dsn.id, nip: dsn.nip, nama: dsn.nama }); setIsEdit(true); setIsModalOpen(true); };
+    const openAddModal = () => { setIsModalOpen(true); setForm({ id: null, nip: "", name: "" }); setIsEdit(false); };
+    const openEditModal = (dsn) => { setForm({ id: dsn.id, nip: dsn.nip, name: dsn.name }); setIsEdit(true); setIsModalOpen(true); };
 
     const handleDelete = (id) => { 
         if (!user.permission.includes("dosen.delete")) return toastError("Akses ditolak");
@@ -72,7 +72,7 @@ const Dosen = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!form.nip || !form.nama) return toastError("Wajib diisi");
+        if (!form.nip || !form.name) return toastError("Wajib diisi");
 
         if (isEdit) {
              if (!user.permission.includes("dosen.update")) return toastError("Akses ditolak");
@@ -98,11 +98,10 @@ const Dosen = () => {
                 {user.permission.includes("dosen.create") && <Button onClick={openAddModal}>+ Tambah Dosen</Button>}
             </div>
 
-            {/* FILTER UI */}
             <div className="flex flex-wrap gap-2 mb-4">
                 <input type="text" placeholder="Cari nama/NIP..." className="border px-3 py-1 rounded flex-grow" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} />
                 <select value={sortBy} onChange={(e) => { setSortBy(e.target.value); setPage(1); }} className="border px-3 py-1 rounded">
-                    <option value="nama">Sort by Nama</option>
+                    <option value="name">Sort by Nama</option>
                     <option value="nip">Sort by NIP</option>
                 </select>
                 <select value={sortOrder} onChange={(e) => { setSortOrder(e.target.value); setPage(1); }} className="border px-3 py-1 rounded">
@@ -119,7 +118,6 @@ const Dosen = () => {
                 onDetail={(id) => navigate(`/admin/dosen/${id}`)}
             />
 
-            {/* PAGINATION UI */}
             <div className="flex justify-between items-center mt-4 border-t pt-4">
                 <p className="text-sm">Halaman {page} dari {totalPages}</p>
                 <div className="flex gap-2">

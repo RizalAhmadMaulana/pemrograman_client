@@ -11,11 +11,6 @@
       "nip": "87654321",
       "nama": "Prof. Ari Santoso",
       "prodi": "Sistem Informasi"
-    },
-    {
-      "id": 3,
-      "nip": "678910",
-      "nama": "SUTOJO"
     }
   ],
   "kelas": [
@@ -36,15 +31,6 @@
       "jam_selesai": "10:20",
       "hari": "Selasa",
       "matkul": "Jaringan Komputer"
-    },
-    {
-      "id": 3,
-      "kode_kelas": "4502",
-      "nama_kelas": "A11.4504",
-      "matkul": "Pemrograman Sisi Server",
-      "hari": "Rabu",
-      "jam_mulai": "07:00",
-      "jam_selesai": "09:30"
     }
   ],
   "mahasiswa": [
@@ -76,12 +62,6 @@
       "kode": "JST101",
       "nama": "Jaringan Komputer",
       "sks": 3
-    },
-    {
-      "id": 3,
-      "kode": "A11.4604",
-      "nama": "Kerja Praktek",
-      "sks": 2
     }
   ],
   "user": [

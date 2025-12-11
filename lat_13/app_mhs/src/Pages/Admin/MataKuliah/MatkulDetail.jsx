@@ -3,7 +3,7 @@ import Card from "@/Pages/Layouts/Components/Card";
 import Heading from "@/Pages/Layouts/Components/Heading";
 import Button from "@/Pages/Layouts/Components/Button";
 import { useParams, useNavigate } from "react-router-dom";
-import { getMatkul } from "@/Utils/Apis/MatkulApi"; // Pastikan import API Matkul
+import { getMatkul } from "@/Utils/Apis/MatkulApi";
 import { toastError } from "@/Utils/Helpers/ToastHelpers";
 
 const MatkulDetail = () => {

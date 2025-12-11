@@ -6,11 +6,10 @@ import { useAuthStateContext } from "@/Utils/Contexts/AuthContext";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 import { confirmDelete } from "@/Utils/Helpers/SwalHelpers";
 
-// API (Perhatikan MatkulApi)
 import { getAllKelas, storeKelas, updateKelas, deleteKelas } from "@/Utils/Apis/KelasApi";
 import { getAllDosen } from "@/Utils/Apis/DosenApi";
 import { getAllMahasiswa } from "@/Utils/Apis/MahasiswaApi";
-import { getAllMatkul } from "@/Utils/Apis/MatkulApi"; // IMPORT YANG BENAR
+import { getAllMatkul } from "@/Utils/Apis/MatkulApi";
 
 import TableRencanaStudi from "./TableRencanaStudi";
 import ModalRencanaStudi from "./ModalRencanaStudi";
@@ -24,7 +23,16 @@ const RencanaStudi = () => {
 
   const [selectedMhs, setSelectedMhs] = useState({});
   const [selectedDsn, setSelectedDsn] = useState({});
-  const [form, setForm] = useState({ mata_kuliah_id: "", dosen_id: "" });
+
+  const [form, setForm] = useState({ 
+      kode_kelas: "",
+      nama_kelas: "", 
+      mata_kuliah_id: "", 
+      dosen_id: "" ,
+      hari: "",         
+      jam_mulai: "",    
+      jam_selesai: ""
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -37,7 +45,7 @@ const RencanaStudi = () => {
         getAllKelas(),
         getAllDosen(),
         getAllMahasiswa(),
-        getAllMatkul(), // Panggil getAllMatkul
+        getAllMatkul(),
       ]);
       setKelas(resKelas.data);
       setDosen(resDosen.data);
@@ -48,17 +56,9 @@ const RencanaStudi = () => {
     }
   };
 
-  const mataKuliahSudahDipakai = kelas.map((k) => String(k.mata_kuliah_id));
-  const mataKuliahBelumAdaKelas = mataKuliah.filter(
-    (m) => !mataKuliahSudahDipakai.includes(String(m.id))
-  );
-
   const getMaxSks = (id) => mahasiswa.find((m) => String(m.id) === String(id))?.max_sks || 0;
   const getDosenMaxSks = (id) => dosen.find((d) => String(d.id) === String(id))?.max_sks || 0;
 
-  // --- Handlers (Sama seperti sebelumnya) ---
-  // (Paste ulang logic handleAddMahasiswa, handleDeleteMahasiswa, handleChangeDosen, handleDeleteKelas dari jawaban sebelumnya)
-  
   const handleAddMahasiswa = async (kelasItem, mhsId) => {
     if (!mhsId) return toastError("Pilih mahasiswa dulu");
 
@@ -66,7 +66,10 @@ const RencanaStudi = () => {
     const sks = matkul?.sks || 0;
 
     const totalSksMahasiswa = kelas
-      .filter((k) => k.mahasiswa_ids.includes(mhsId) || k.mahasiswa_ids.includes(parseInt(mhsId)) || k.mahasiswa_ids.includes(String(mhsId)))
+      .filter((k) => {
+          const ids = k.mahasiswa_ids || [];
+          return ids.includes(mhsId) || ids.includes(parseInt(mhsId)) || ids.includes(String(mhsId));
+      })
       .map((k) => mataKuliah.find((m) => String(m.id) === String(k.mata_kuliah_id))?.sks || 0)
       .reduce((acc, curr) => acc + curr, 0);
 
@@ -77,14 +80,15 @@ const RencanaStudi = () => {
       return;
     }
 
-    if (kelasItem.mahasiswa_ids.includes(parseInt(mhsId)) || kelasItem.mahasiswa_ids.includes(String(mhsId))) {
+    const currentIds = kelasItem.mahasiswa_ids || [];
+    if (currentIds.includes(parseInt(mhsId)) || currentIds.includes(String(mhsId))) {
       toastError("Mahasiswa sudah terdaftar");
       return;
     }
 
     const updated = {
       ...kelasItem,
-      mahasiswa_ids: [...kelasItem.mahasiswa_ids, mhsId],
+      mahasiswa_ids: [...currentIds, mhsId],
     };
 
     await updateKelas(kelasItem.id, updated);
@@ -94,9 +98,10 @@ const RencanaStudi = () => {
   };
 
   const handleDeleteMahasiswa = async (kelasItem, mhsId) => {
+    const currentIds = kelasItem.mahasiswa_ids || [];
     const updated = {
       ...kelasItem,
-      mahasiswa_ids: kelasItem.mahasiswa_ids.filter((id) => String(id) !== String(mhsId)),
+      mahasiswa_ids: currentIds.filter((id) => String(id) !== String(mhsId)),
     };
     await updateKelas(kelasItem.id, updated);
     toastSuccess("Mahasiswa dihapus");
@@ -134,7 +139,15 @@ const RencanaStudi = () => {
   };
 
   const openAddModal = () => {
-    setForm({ mata_kuliah_id: "", dosen_id: "" });
+    setForm({ 
+        kode_kelas: "", 
+        nama_kelas: "", 
+        mata_kuliah_id: "", 
+        dosen_id: "",
+        hari: "", 
+        jam_mulai: "", 
+        jam_selesai: "" 
+    });
     setIsModalOpen(true);
   };
 
@@ -144,11 +157,20 @@ const RencanaStudi = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.mata_kuliah_id || !form.dosen_id) {
+    if (!form.mata_kuliah_id || !form.dosen_id || !form.kode_kelas || !form.hari || !form.jam_mulai) {
       toastError("Form tidak lengkap");
       return;
     }
-    await storeKelas({ ...form, mahasiswa_ids: [] });
+
+    const selectedMatkul = mataKuliah.find(m => String(m.id) === String(form.mata_kuliah_id));
+    const namaMatkulString = selectedMatkul ? (selectedMatkul.name || selectedMatkul.nama) : "";
+
+    await storeKelas({ 
+        ...form, 
+        matkul: namaMatkulString, 
+        mahasiswa_ids: [],        
+    });
+    
     setIsModalOpen(false);
     toastSuccess("Kelas ditambahkan");
     fetchData();
@@ -156,12 +178,17 @@ const RencanaStudi = () => {
 
   if (!user.permission.includes("rencana-studi.read")) return <Card><p className="text-red-500 text-center">Akses Ditolak</p></Card>;
 
+  const mataKuliahSudahDipakai = kelas.map((k) => String(k.mata_kuliah_id));
+  const mataKuliahBelumAdaKelas = mataKuliah.filter(
+    (m) => !mataKuliahSudahDipakai.includes(String(m.id))
+  );
+
   return (
     <>
       <Card>
         <div className="flex justify-between items-center mb-4">
           <Heading as="h2">Rencana Studi</Heading>
-          {user.permission.includes("rencana-studi.page") && (
+          {user.permission.includes("rencana-studi.create") && (
             <Button onClick={openAddModal}>+ Tambah Kelas</Button>
           )}
         </div>

@@ -40,11 +40,11 @@ const ModalDosen = ({
             />
           </div>
           <div>
-            <Label htmlFor="nama">Nama</Label>
+            <Label htmlFor="name">Nama</Label>
             <Input
 	            type="text"
-              name="nama"
-              value={form.nama}
+              name="name"
+              value={form.name}
               onChange={onChange}
               placeholder="Masukkan Nama Dosen"
               required

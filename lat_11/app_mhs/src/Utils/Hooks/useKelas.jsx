@@ -7,7 +7,6 @@ import {
 } from "@/Utils/Apis/KelasApi";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 
-// Hook Read
 export const useKelas = (query = {}) =>
   useQuery({
     queryKey: ["kelas", query],
@@ -19,7 +18,6 @@ export const useKelas = (query = {}) =>
     keepPreviousData: true,
   });
 
-// Hook Create (Rename useAdd -> useStore)
 export const useStoreKelas = () => {
   const queryClient = useQueryClient();
   return useMutation({

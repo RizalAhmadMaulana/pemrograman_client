@@ -152,7 +152,9 @@
         "kelas.page",
         "kelas.read",
         "mahasiswa.page",
-        "mahasiswa.read"
+        "mahasiswa.read",
+        "rencana-studi.page",
+        "rencana-studi.read"
       ]
     }
   ]

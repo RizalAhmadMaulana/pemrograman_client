@@ -7,7 +7,6 @@ import {
 } from "@/Utils/Apis/MatkulApi";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 
-// Hook Read
 export const useMatkul = (query = {}) =>
   useQuery({
     queryKey: ["matakuliah", query],
@@ -19,7 +18,7 @@ export const useMatkul = (query = {}) =>
     keepPreviousData: true,
   });
 
-// Hook Create (Rename useAdd -> useStore)
+
 export const useStoreMatkul = () => {
   const queryClient = useQueryClient();
   return useMutation({

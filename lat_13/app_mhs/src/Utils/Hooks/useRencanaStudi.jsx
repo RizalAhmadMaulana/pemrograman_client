@@ -6,22 +6,19 @@ import {
 } from "@/Utils/Apis/RencanaStudiApi";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 
-// Hook untuk mengambil list mahasiswa di kelas tertentu
 export const useMahasiswaInKelas = (kelasId) => {
   return useQuery({
     queryKey: ["rencana_studi", "kelas", kelasId],
     queryFn: () => getMahasiswaByKelas(kelasId),
-    enabled: !!kelasId, // Hanya jalan jika kelasId ada
+    enabled: !!kelasId, 
   });
 };
 
-// Hook untuk menambahkan mahasiswa ke kelas
 export const useAddMahasiswaToKelas = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: storeRencanaStudi,
     onSuccess: () => {
-      // Refresh data list mahasiswa di kelas
       queryClient.invalidateQueries({ queryKey: ["rencana_studi"] });
       toastSuccess("Mahasiswa berhasil ditambahkan ke kelas!");
     },
@@ -31,7 +28,6 @@ export const useAddMahasiswaToKelas = () => {
   });
 };
 
-// Hook untuk menghapus mahasiswa dari kelas
 export const useRemoveMahasiswaFromKelas = () => {
   const queryClient = useQueryClient();
   return useMutation({

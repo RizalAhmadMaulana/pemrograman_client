@@ -7,7 +7,6 @@ import {
 } from "@/Utils/Apis/DosenApi";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 
-// Hook Read (Sesuai Notion)
 export const useDosen = (query = {}) =>
   useQuery({
     queryKey: ["dosen", query],
@@ -19,7 +18,6 @@ export const useDosen = (query = {}) =>
     keepPreviousData: true,
   });
 
-// Hook Create (Rename useAdd -> useStore biar sama kayak Mahasiswa)
 export const useStoreDosen = () => {
   const queryClient = useQueryClient();
   return useMutation({

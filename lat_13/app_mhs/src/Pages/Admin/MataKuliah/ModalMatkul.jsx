@@ -39,11 +39,11 @@ const ModalMatkul = ({
             />
           </div>
           <div>
-            <Label htmlFor="nama">Nama MK</Label>
+            <Label htmlFor="name">Nama MK</Label>
             <Input
 	            type="text"
-              name="nama"
-              value={form.nama}
+              name="name"
+              value={form.name}
               onChange={onChange}
               placeholder="Masukkan Nama Mata Kuliah"
               required

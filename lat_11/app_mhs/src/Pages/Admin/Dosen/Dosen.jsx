@@ -20,14 +20,14 @@ const Dosen = () => {
     const navigate = useNavigate();
     const { user } = useAuthStateContext();
 
-    // 1. STATE
+    // STATE
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
     const [sortBy, setSortBy] = useState("nama");
     const [sortOrder, setSortOrder] = useState("asc");
     const [search, setSearch] = useState("");
 
-    // 2. HOOK
+    // HOOK
     const {
         data: result = { data: [], total: 0 },
         isLoading: isLoadingDosen,
@@ -39,7 +39,7 @@ const Dosen = () => {
         _limit: limit,
     });
 
-    // 3. DATA
+    // DATA
     const { data: dosen } = result;
     const totalItems = result.total;
     const totalPages = Math.ceil(totalItems / limit);
@@ -54,7 +54,7 @@ const Dosen = () => {
     const [isEdit, setIsEdit] = useState(false); 
     const [form, setForm] = useState({ id: null, nip: "", nama: "" });
 
-    // 4. HANDLERS
+    // HANDLERS
     const handlePrev = () => setPage((prev) => Math.max(prev - 1, 1));
     const handleNext = () => setPage((prev) => Math.min(prev + 1, totalPages));
 
@@ -119,7 +119,6 @@ const Dosen = () => {
                 onDetail={(id) => navigate(`/admin/dosen/${id}`)}
             />
 
-            {/* PAGINATION UI */}
             <div className="flex justify-between items-center mt-4 border-t pt-4">
                 <p className="text-sm">Halaman {page} dari {totalPages}</p>
                 <div className="flex gap-2">

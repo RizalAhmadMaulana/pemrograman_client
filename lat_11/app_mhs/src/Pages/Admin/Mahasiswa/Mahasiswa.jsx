@@ -20,14 +20,14 @@ const Mahasiswa = () => {
   const navigate = useNavigate();
   const { user } = useAuthStateContext();
 
-  // --- 1. STATE ---
+  // --- STATE ---
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [sortBy, setSortBy] = useState("nama");
   const [sortOrder, setSortOrder] = useState("asc");
   const [search, setSearch] = useState("");
 
-  // --- 2. PANGGIL HOOK ---
+  // --- PANGGIL HOOK ---
   const {
     data: result = { data: [], total: 0 },
     isLoading: isLoadingMahasiswa,
@@ -39,7 +39,7 @@ const Mahasiswa = () => {
     _limit: limit,
   });
 
-  // --- 3. PECAH HASIL ---
+  // --- PECAH HASIL ---
   const { data: mahasiswa } = result;
   const totalItems = result.total;
   const totalPages = Math.ceil(totalItems / limit);
@@ -54,11 +54,10 @@ const Mahasiswa = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [form, setForm] = useState({ id: null, nim: "", nama: "" });
 
-  // --- 4. HANDLER PAGINATION (SESUAI NOTION) ---
+  // --- HANDLER PAGINATION (SESUAI NOTION) ---
   const handlePrev = () => setPage((prev) => Math.max(prev - 1, 1));
   const handleNext = () => setPage((prev) => Math.min(prev + 1, totalPages));
 
-  // --- Handler Lainnya ---
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -123,7 +122,6 @@ const Mahasiswa = () => {
         )}
       </div>
 
-      {/* --- UI FILTER --- */}
       <div className="flex flex-wrap gap-2 mb-4">
         <input
           type="text"
@@ -149,17 +147,14 @@ const Mahasiswa = () => {
           <option value="desc">Desc</option>
         </select>
       </div>
-
-      {/* --- TABLE & LOADING (PASSING PROP isLoading SESUAI NOTION) --- */}
       <TableMahasiswa
         data={mahasiswa}
-        isLoading={isLoadingMahasiswa} // Passing prop isLoading
+        isLoading={isLoadingMahasiswa}
         onEdit={openEditModal}
         onDelete={handleDelete}
         onDetail={(id) => navigate(`/admin/mahasiswa/${id}`)}
       />
 
-      {/* --- PAGINATION UI (SESUAI NOTION) --- */}
       <div className="flex justify-between items-center mt-4 border-t pt-4">
          <p className="text-sm">
             Halaman {page} dari {totalPages}

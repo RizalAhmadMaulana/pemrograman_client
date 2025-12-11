@@ -22,7 +22,7 @@ const MataKuliah = () => {
 
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
-    const [sortBy, setSortBy] = useState("nama");
+    const [sortBy, setSortBy] = useState("name");
     const [sortOrder, setSortOrder] = useState("asc");
     const [search, setSearch] = useState("");
 
@@ -47,7 +47,7 @@ const MataKuliah = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false); 
-    const [form, setForm] = useState({ id: null, kode: "", nama: "", sks: "" });
+    const [form, setForm] = useState({ id: null, kode: "", name: "", sks: "" });
 
     const handlePrev = () => setPage((prev) => Math.max(prev - 1, 1));
     const handleNext = () => setPage((prev) => Math.min(prev + 1, totalPages));
@@ -57,8 +57,8 @@ const MataKuliah = () => {
         setForm({ ...form, [e.target.name]: value }); 
     };
     
-    const openAddModal = () => { setIsModalOpen(true); setForm({ id: null, kode: "", nama: "", sks: "" }); setIsEdit(false); };
-    const openEditModal = (mk) => { setForm({ id: mk.id, kode: mk.kode, nama: mk.nama, sks: mk.sks }); setIsEdit(true); setIsModalOpen(true); };
+    const openAddModal = () => { setIsModalOpen(true); setForm({ id: null, kode: "", name: "", sks: "" }); setIsEdit(false); };
+    const openEditModal = (mk) => { setForm({ id: mk.id, kode: mk.kode, name: mk.name, sks: mk.sks }); setIsEdit(true); setIsModalOpen(true); };
 
     const handleDelete = (id) => { 
         if (!user.permission.includes("matakuliah.delete")) return toastError("Akses ditolak");
@@ -67,7 +67,7 @@ const MataKuliah = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!form.kode || !form.nama) return toastError("Wajib diisi");
+        if (!form.kode || !form.name) return toastError("Wajib diisi");
 
         if (isEdit) {
             if (!user.permission.includes("matakuliah.update")) return toastError("Akses ditolak");
@@ -90,7 +90,7 @@ const MataKuliah = () => {
             <div className="flex flex-wrap gap-2 mb-4">
                 <input type="text" placeholder="Cari Matkul..." className="border px-3 py-1 rounded flex-grow" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} />
                 <select value={sortBy} onChange={(e) => { setSortBy(e.target.value); setPage(1); }} className="border px-3 py-1 rounded">
-                    <option value="nama">Sort by Nama</option>
+                    <option value="name">Sort by Nama</option>
                     <option value="kode">Sort by Kode</option>
                     <option value="sks">Sort by SKS</option>
                 </select>

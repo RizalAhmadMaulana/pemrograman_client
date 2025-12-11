@@ -18,32 +18,31 @@ const Mahasiswa = () => {
   const navigate = useNavigate();
   const { user } = useAuthStateContext();
 
-  // --- 1. STATE DATA ---
+  // --- STATE DATA ---
   const [mahasiswa, setMahasiswa] = useState([]);
   const [kelas, setKelas] = useState([]);
   const [mataKuliah, setMataKuliah] = useState([]);
   
-  // --- 2. STATE PAGINATION & FILTER ---
+  // --- STATE PAGINATION & FILTER ---
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
-  const [sortBy, setSortBy] = useState("name"); // Default sort by nama
+  const [sortBy, setSortBy] = useState("name"); 
   const [sortOrder, setSortOrder] = useState("asc");
   const [search, setSearch] = useState("");
   const [totalItems, setTotalItems] = useState(0);
 
-  // --- 3. STATE MODAL ---
+  // --- STATE MODAL ---
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [form, setForm] = useState({ id: null, nim: "", name: "", max_sks: 0 });
 
-  // --- 4. FETCH DATA (Dipanggil saat page/search/sort berubah) ---
+  // --- FETCH DATA (Dipanggil saat page/search/sort berubah) ---
   useEffect(() => {
     fetchData();
-  }, [page, search, sortBy, sortOrder]); // Dependency array
+  }, [page, search, sortBy, sortOrder]);
 
   const fetchData = async () => {
     try {
-      // Setup Params untuk Mahasiswa (Pagination)
       const mhsParams = {
         q: search,
         _page: page,
@@ -54,13 +53,12 @@ const Mahasiswa = () => {
 
       // Request API Paralel
       const [resMhs, resKelas, resMatkul] = await Promise.all([
-        getAllMahasiswa(mhsParams), // Pakai params
-        getAllKelas(),              // Ambil semua untuk hitung SKS
-        getAllMatkul()              // Ambil semua untuk hitung SKS
+        getAllMahasiswa(mhsParams), 
+        getAllKelas(),              
+        getAllMatkul()              
       ]);
 
       setMahasiswa(resMhs.data);
-      // Ambil total data dari header x-total-count (standar json-server)
       setTotalItems(parseInt(resMhs.headers["x-total-count"] || 0));
       
       setKelas(resKelas.data);
@@ -73,7 +71,7 @@ const Mahasiswa = () => {
 
   const totalPages = Math.ceil(totalItems / limit);
 
-  // --- 5. LOGIC HITUNG SKS ---
+  // --- LOGIC HITUNG SKS ---
   const getTotalSks = (mhsId) => {
     return kelas
       .filter((k) => k.mahasiswa_ids.includes(mhsId) || k.mahasiswa_ids.includes(String(mhsId)))
@@ -81,7 +79,7 @@ const Mahasiswa = () => {
       .reduce((a, b) => a + b, 0);
   };
 
-  // --- 6. HANDLERS UI ---
+  // --- HANDLERS UI ---
   const handlePrev = () => setPage((prev) => Math.max(prev - 1, 1));
   const handleNext = () => setPage((prev) => Math.min(prev + 1, totalPages));
 
@@ -92,7 +90,6 @@ const Mahasiswa = () => {
   };
 
   const openEditModal = (mhs) => {
-    // Mapping data ke form (pastikan field 'name' masuk ke state form 'name')
     setForm({ id: mhs.id, nim: mhs.nim, name: mhs.name || mhs.nama, max_sks: mhs.max_sks });
     setIsEdit(true);
     setIsModalOpen(true);
@@ -141,7 +138,6 @@ const Mahasiswa = () => {
         )}
       </div>
 
-      {/* --- UI FILTER (SEARCH & SORT) --- */}
       <div className="flex flex-wrap gap-2 mb-4">
         <input
           type="text"
@@ -150,7 +146,7 @@ const Mahasiswa = () => {
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
-            setPage(1); // Reset ke halaman 1 saat mencari
+            setPage(1); 
           }}
         />
 
@@ -180,7 +176,6 @@ const Mahasiswa = () => {
         </select>
       </div>
 
-      {/* --- TABLE --- */}
       <TableMahasiswa
         data={mahasiswa}
         getTotalSks={getTotalSks}
@@ -189,7 +184,6 @@ const Mahasiswa = () => {
         onDetail={(id) => navigate(`/admin/mahasiswa/${id}`)}
       />
 
-      {/* --- PAGINATION --- */}
       <div className="flex justify-between items-center mt-4 border-t pt-4">
          <p className="text-sm text-gray-600">
             Halaman {page} dari {totalPages} ({totalItems} Data)
