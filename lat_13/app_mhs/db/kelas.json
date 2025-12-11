@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "kode_kelas": "A11.4403",
+    "nama_kelas": "H.4.8",
+    "matkul": "Algoritma dan Pemrograman",
+    "mata_kuliah_id": 1,
+    "dosen_id": 1,
+    "mahasiswa_ids": [1, 2],
+    "hari": "Senin",
+    "jam_mulai": "07:00",
+    "jam_selesai": "09:30"
+  },
+  {
+    "id": 2,
+    "kode_kelas": "A11.4404",
+    "nama_kelas": "D.2.I",
+    "matkul": "Jaringan Komputer",
+    "mata_kuliah_id": 3,
+    "dosen_id": 2,
+    "mahasiswa_ids": [3],
+    "hari": "Selasa",
+    "jam_mulai": "10:00",
+    "jam_selesai": "12:00"
+  }
+]

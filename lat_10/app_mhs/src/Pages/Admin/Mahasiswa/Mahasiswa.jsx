@@ -8,10 +8,6 @@ import ModalMahasiswa from "./ModalMahasiswa";
 import { useNavigate } from "react-router-dom";
 import { confirmDelete, confirmUpdate } from "@/Utils/Helpers/SwalHelpers";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
-// --- HAPUS: import { getAllMahasiswa, storeMahasiswa, updateMahasiswa, deleteMahasiswa } ---
-// --- HAPUS: import { useEffect } ---
-
-// 1. IMPORT HOOKS BARU
 import {
     useMahasiswa,
     useStoreMahasiswa,
@@ -23,21 +19,15 @@ const Mahasiswa = () => {
     const navigate = useNavigate();
     const { user } = useAuthStateContext();
 
-    // 2. GANTI STATE MANUAL DENGAN HOOKS (READ)
     const { data: mahasiswa, isLoading, isError } = useMahasiswa(); 
     
-    // 3. AMBIL FUNGSI MUTATE (CUD)
     const mutationStore = useStoreMahasiswa();
     const mutationUpdate = useUpdateMahasiswa();
     const mutationDelete = useDeleteMahasiswa();
     
-    // --- STATE MODAL & FORM (TETAP SAMA) ---
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false); 
     const [form, setForm] = useState({ id: null, nim: "", nama: "" });
-
-    // --- HAPUS: fetchMahasiswa function ---
-    // --- HAPUS: useEffect(() => { fetchMahasiswa(); }, []); ---
 
     const handleChange = (e) => { 
         setForm({ ...form, [e.target.name]: e.target.value }); 
@@ -59,7 +49,6 @@ const Mahasiswa = () => {
         if (!user.permission.includes("mahasiswa.delete")) return toastError("Akses ditolak");
         
         confirmDelete(() => {
-            // Panggil Mutate Delete
             mutationDelete.mutate(id, {
                 onSuccess: () => toastSuccess("Data berhasil dihapus"),
                 onError: () => toastError("Gagal menghapus data"),
@@ -79,7 +68,6 @@ const Mahasiswa = () => {
             if (!user.permission.includes("mahasiswa.update")) return toastError("Akses ditolak");
             
             confirmUpdate(() => {
-                // Panggil Mutate Update
                 mutationUpdate.mutate({ id: form.id, data: form }, {
                     onSuccess: () => {
                         toastSuccess("Data berhasil diperbarui");
@@ -93,7 +81,6 @@ const Mahasiswa = () => {
         } else {
             if (!user.permission.includes("mahasiswa.create")) return toastError("Akses ditolak");
             
-            // Panggil Mutate Add
             mutationStore.mutate(form, {
                 onSuccess: () => {
                     toastSuccess("Data berhasil ditambahkan");
@@ -105,7 +92,6 @@ const Mahasiswa = () => {
         }
     };
 
-    // 4. HANDLING LOADING/ERROR DARI HOOK
     if (!user.permission.includes("mahasiswa.read")) return <Card><p className="text-red-500 text-center">Akses Ditolak</p></Card>;
     
     if (isLoading) return <Card><p className="text-center">Memuat data...</p></Card>;

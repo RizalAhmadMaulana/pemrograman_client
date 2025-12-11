@@ -28,14 +28,11 @@ const MataKuliah = () => {
     const navigate = useNavigate();
     const { user } = useAuthStateContext();
 
-    // --- DEKLARASI STATE ---
-    // Sesuaikan state dengan field Mata Kuliah (kode, nama, sks)
     const [matakuliah, setMatakuliah] = useState([]); 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false); 
     const [form, setForm] = useState({ id: null, kode: "", nama: "", sks: "" });
 
-    // --- FUNGSI FETCH DATA (GET) ---
     const fetchMatkul = async () => {
         try {
             const res = await getAllMatkul();
@@ -46,14 +43,11 @@ const MataKuliah = () => {
         }
     };
 
-    // PENGGUNAAN USE EFFECT
     useEffect(() => {
         fetchMatkul(); 
     }, []);
 
-    // --- FORM & MODAL HANDLERS (Sama seperti Mahasiswa) ---
     const handleChange = (e) => { 
-        // Konversi SKS ke number jika fieldnya 'sks'
         const value = e.target.name === 'sks' ? parseInt(e.target.value) : e.target.value;
         setForm({ ...form, [e.target.name]: value }); 
     };
@@ -95,7 +89,6 @@ const MataKuliah = () => {
             toastError("Kode, Nama, dan SKS wajib diisi");
             return;
         }
-        // ... (Logic Create/Update sama persis seperti Mahasiswa.jsx)
         if (isEdit) {
             confirmUpdate(async () => {
                 try {

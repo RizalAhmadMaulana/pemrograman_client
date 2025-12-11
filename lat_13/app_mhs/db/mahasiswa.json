@@ -1,0 +1,7 @@
+[
+  { "id": 1, "nim": "A11.2023.001", "name": "Andi", "max_sks": 24 },
+  { "id": 2, "nim": "A11.2023.002", "name": "Budi", "max_sks": 20 },
+  { "id": 3, "nim": "A11.2023.003", "name": "Citra", "max_sks": 22 },
+  { "id": 4, "nim": "A11.2023.004", "name": "Dedi", "max_sks": 18 },
+  { "id": 5, "nim": "A11.2023.005", "name": "Eka", "max_sks": 24 }
+]

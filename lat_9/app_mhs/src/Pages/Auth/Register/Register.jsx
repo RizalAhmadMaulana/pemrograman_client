@@ -8,7 +8,7 @@ import Card from "@/Pages/Layouts/Components/Card";
 import Heading from "@/Pages/Layouts/Components/Heading";
 import Form from "@/Pages/Layouts/Components/Form";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
-import { register } from "@/Utils/Apis/AuthApi"; // Import fungsi register
+import { register } from "@/Utils/Apis/AuthApi";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const Register = () => {
       
       await register(form);
       toastSuccess("Registrasi berhasil! Silakan login.");
-      navigate("/"); // Redirect ke halaman login
+      navigate("/");
     } catch (err) {
       toastError(err.message);
     }

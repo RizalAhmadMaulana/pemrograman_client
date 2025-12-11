@@ -3,18 +3,14 @@
     {
       "id": "1",
       "nip": "12345678",
-      "nama": "Dr. Risa Wijayanti A"
+      "nama": "Dr. Risa Wijayanti",
+      "prodi": "Informatika"
     },
     {
       "id": "2",
       "nip": "87654321",
       "nama": "Prof. Ari Santoso",
       "prodi": "Sistem Informasi"
-    },
-    {
-      "id": null,
-      "nip": "678910",
-      "nama": "SUTOJO"
     }
   ],
   "mahasiswa": [
@@ -82,6 +78,16 @@
         "dashboard.page",
         "matakuliah.page",
         "matakuliah.read"
+      ]
+    },
+    {
+      "id": "25cc",
+      "name": "Rizal Ahmad M",
+      "email": "rizal@mail.com",
+      "password": "123",
+      "role": "mahasiswa",
+      "permission": [
+        "dashboard.page"
       ]
     }
   ]

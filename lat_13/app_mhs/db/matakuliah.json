@@ -1,0 +1,5 @@
+[
+  { "id": "1", "kode": "PCL001", "name": "Algoritma dan Pemrograman", "sks": 3 },
+  { "id": "2", "kode": "BDT002", "name": "Basis Data", "sks": 3 },
+  { "id": "3", "kode": "JKT003", "name": "Jaringan Komputer", "sks": 2 }
+]

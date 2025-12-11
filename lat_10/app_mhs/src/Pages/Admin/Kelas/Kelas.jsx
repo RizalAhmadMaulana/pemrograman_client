@@ -5,13 +5,10 @@ import Heading from "@/Pages/Layouts/Components/Heading";
 import Button from "@/Pages/Layouts/Components/Button";
 import TableKelas from "./TableKelas";
 import ModalKelas from "./ModalKelas";
-// --- HAPUS: import { getAllKelas, storeKelas, updateKelas, deleteKelas } ---
-// --- HAPUS: import { useEffect } ---
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 import { confirmDelete, confirmUpdate } from "@/Utils/Helpers/SwalHelpers";
 import { useAuthStateContext } from "@/Utils/Contexts/AuthContext";
 
-// 1. IMPORT HOOKS BARU
 import {
     useKelas,
     useAddKelas,
@@ -23,15 +20,12 @@ const Kelas = () => {
   const navigate = useNavigate();
   const { user } = useAuthStateContext();
 
-  // 2. GANTI STATE MANUAL DENGAN HOOKS (READ)
   const { data: data, isLoading, isError } = useKelas(); 
 
-  // 3. AMBIL FUNGSI MUTATE (CUD)
   const mutationAdd = useAddKelas();
   const mutationUpdate = useUpdateKelas();
   const mutationDelete = useDeleteKelas();
   
-  // --- STATE MODAL & FORM (TETAP SAMA) ---
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   
@@ -45,21 +39,15 @@ const Kelas = () => {
     jam_selesai: "" 
   });
 
-  // --- HAPUS: fetchData function ---
-  // --- HAPUS: useEffect(() => { fetchData(); }, []); ---
-
-
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Cek Permission Update/Create secara manual
     if (isEdit && !user.permission.includes("kelas.update")) return toastError("Akses ditolak");
     if (!isEdit && !user.permission.includes("kelas.create")) return toastError("Akses ditolak");
 
     try {
         if (isEdit) {
-            // Panggil Mutate Update
             mutationUpdate.mutate({ id: form.id, data: form }, {
                 onSuccess: () => {
                     toastSuccess("Berhasil diperbarui");
@@ -68,7 +56,6 @@ const Kelas = () => {
                 onError: () => toastError("Gagal proses data"),
             });
         } else {
-            // Panggil Mutate Add
             mutationAdd.mutate(form, {
                 onSuccess: () => {
                     toastSuccess("Berhasil disimpan");
@@ -84,7 +71,6 @@ const Kelas = () => {
     if (!user.permission.includes("kelas.delete")) return toastError("Akses ditolak");
     
     confirmDelete(() => {
-        // Panggil Mutate Delete
         mutationDelete.mutate(id, {
             onSuccess: () => toastSuccess("Berhasil dihapus"),
             onError: () => toastError("Gagal menghapus data"),
@@ -104,9 +90,7 @@ const Kelas = () => {
     setIsModalOpen(true); 
   };
 
-  // 4. HANDLING LOADING/ERROR DARI HOOK
   if (!user.permission.includes("kelas.read")) return <Card><p className="text-red-500 text-center">Akses Ditolak</p></Card>;
-  
   if (isLoading) return <Card><p className="text-center">Memuat data...</p></Card>;
   if (isError) return <Card><p className="text-center text-red-500">Gagal memuat data</p></Card>;
 

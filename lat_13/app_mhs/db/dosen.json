@@ -1,0 +1,4 @@
+[
+  { "id": 1, "nip": "12345678", "name": "Dr. Risa Wijayanti", "prodi": "Informatika", "max_sks": 12 },
+  { "id": 2, "nip": "87654321", "name": "Prof. Ari Santoso", "prodi": "Sistem Informasi", "max_sks": 15 }
+]

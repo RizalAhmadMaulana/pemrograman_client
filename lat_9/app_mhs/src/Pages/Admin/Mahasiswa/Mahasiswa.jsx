@@ -30,13 +30,11 @@ const Mahasiswa = () => {
     const navigate = useNavigate();
     const { user } = useAuthStateContext();
 
-    // --- DEKLARASI STATE ---
     const [mahasiswa, setMahasiswa] = useState([]); 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false); 
     const [form, setForm] = useState({ id: null, nim: "", nama: "" });
 
-    // --- FUNGSI FETCH DATA (GET) ---
     const fetchMahasiswa = async () => {
         try {
             const res = await getAllMahasiswa();
@@ -47,12 +45,10 @@ const Mahasiswa = () => {
         }
     };
 
-    // PENGGUNAAN USE EFFECT
     useEffect(() => {
         fetchMahasiswa(); 
     }, []);
 
-    // --- FORM & MODAL HANDLERS ---
     const handleChange = (e) => { 
         setForm({ ...form, [e.target.name]: e.target.value }); 
     };

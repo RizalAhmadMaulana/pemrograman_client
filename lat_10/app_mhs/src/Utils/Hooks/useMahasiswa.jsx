@@ -8,7 +8,6 @@ import {
 } from "@/Utils/Apis/MahasiswaApi";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 
-// Ambil semua mahasiswa
 export const useMahasiswa = () =>
   useQuery({
     queryKey: ["mahasiswa"],

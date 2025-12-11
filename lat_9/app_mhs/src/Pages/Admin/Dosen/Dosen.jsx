@@ -28,14 +28,11 @@ const Dosen = () => {
     const navigate = useNavigate();
     const { user } = useAuthStateContext();
 
-    // --- DEKLARASI STATE ---
-    // Sesuaikan state dengan field Dosen (nip, nama)
     const [dosen, setDosen] = useState([]); 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false); 
     const [form, setForm] = useState({ id: null, nip: "", nama: "" });
 
-    // --- FUNGSI FETCH DATA (GET) ---
     const fetchDosen = async () => {
         try {
             const res = await getAllDosen();
@@ -46,12 +43,10 @@ const Dosen = () => {
         }
     };
 
-    // PENGGUNAAN USE EFFECT
     useEffect(() => {
         fetchDosen(); 
     }, []);
 
-    // --- FORM & MODAL HANDLERS (Sama seperti Mahasiswa) ---
     const handleChange = (e) => { 
         setForm({ ...form, [e.target.name]: e.target.value }); 
     };
@@ -92,7 +87,6 @@ const Dosen = () => {
             toastError("NIP dan Nama wajib diisi");
             return;
         }
-        // ... (Logic Create/Update sama persis seperti Mahasiswa.jsx)
         if (isEdit) {
             confirmUpdate(async () => {
                 try {

@@ -1,0 +1,159 @@
+{
+  "dosen": [
+    {
+      "id": 1,
+      "nip": "12345678",
+      "name": "Dr. Risa Wijayanti",
+      "prodi": "Informatika",
+      "max_sks": 12
+    },
+    {
+      "id": 2,
+      "nip": "87654321",
+      "name": "Prof. Ari Santoso",
+      "prodi": "Sistem Informasi",
+      "max_sks": 15
+    }
+  ],
+  "kelas": [
+    {
+      "id": 1,
+      "kode_kelas": "A11.4403",
+      "nama_kelas": "H.4.8",
+      "matkul": "Algoritma dan Pemrograman",
+      "mata_kuliah_id": 1,
+      "dosen_id": 1,
+      "mahasiswa_ids": [
+        1,
+        2
+      ],
+      "hari": "Senin",
+      "jam_mulai": "07:00",
+      "jam_selesai": "09:30"
+    },
+    {
+      "id": 2,
+      "kode_kelas": "A11.4404",
+      "nama_kelas": "D.2.I",
+      "matkul": "Jaringan Komputer",
+      "mata_kuliah_id": 3,
+      "dosen_id": 2,
+      "mahasiswa_ids": [
+        3
+      ],
+      "hari": "Selasa",
+      "jam_mulai": "10:00",
+      "jam_selesai": "12:00"
+    }
+  ],
+  "mahasiswa": [
+    {
+      "id": 1,
+      "nim": "A11.2023.001",
+      "name": "Andi",
+      "max_sks": 24
+    },
+    {
+      "id": 2,
+      "nim": "A11.2023.002",
+      "name": "Budi",
+      "max_sks": 20
+    },
+    {
+      "id": 3,
+      "nim": "A11.2023.003",
+      "name": "Citra",
+      "max_sks": 22
+    },
+    {
+      "id": 4,
+      "nim": "A11.2023.004",
+      "name": "Dedi",
+      "max_sks": 18
+    },
+    {
+      "id": 5,
+      "nim": "A11.2023.005",
+      "name": "Eka",
+      "max_sks": 24
+    }
+  ],
+  "matakuliah": [
+    {
+      "id": "1",
+      "kode": "PCL001",
+      "name": "Algoritma dan Pemrograman",
+      "sks": 3
+    },
+    {
+      "id": "2",
+      "kode": "BDT002",
+      "name": "Basis Data",
+      "sks": 3
+    },
+    {
+      "id": "3",
+      "kode": "JKT003",
+      "name": "Jaringan Komputer",
+      "sks": 2
+    }
+  ],
+  "user": [
+    {
+      "id": "1",
+      "name": "Admin 1",
+      "email": "admin@mail.com",
+      "password": "admin123",
+      "role": "admin",
+      "permission": [
+        "dashboard.page",
+        "mahasiswa.page",
+        "mahasiswa.read",
+        "mahasiswa.create",
+        "mahasiswa.update",
+        "mahasiswa.delete",
+        "dosen.page",
+        "dosen.read",
+        "dosen.create",
+        "dosen.update",
+        "dosen.delete",
+        "matakuliah.page",
+        "matakuliah.read",
+        "matakuliah.create",
+        "matakuliah.update",
+        "matakuliah.delete",
+        "user.page",
+        "user.read",
+        "user.update",
+        "kelas.page",
+        "kelas.read",
+        "kelas.create",
+        "kelas.update",
+        "kelas.delete",
+        "rencana-studi.page",
+        "rencana-studi.read",
+        "rencana-studi.create",
+        "rencana-studi.update",
+        "rencana-studi.delete"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Mahasiswa 1",
+      "email": "mahasiswa@mail.com",
+      "password": "mahasiswa123",
+      "role": "mahasiswa",
+      "permission": [
+        "dashboard.page",
+        "matakuliah.page",
+        "matakuliah.read",
+        "dosen.page",
+        "dosen.read",
+        "kelas.page",
+        "kelas.read",
+        "mahasiswa.page",
+        "mahasiswa.read"
+      ]
+    }
+  ]
+}

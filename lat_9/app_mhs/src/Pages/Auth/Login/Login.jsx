@@ -9,7 +9,6 @@ import Heading from "@/Pages/Layouts/Components/Heading";
 import Form from "@/Pages/Layouts/Components/Form";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 
-// Import API Login dan Context
 import { login } from "@/Utils/Apis/AuthApi";
 import { useAuthStateContext } from "@/Utils/Contexts/AuthContext";
 
@@ -86,7 +85,7 @@ const Login = () => {
         </Button>
       </Form>
       <p className="text-sm text-center text-gray-600 mt-4">
-        Belum punya akun? <Link href="#">Daftar</Link>
+        Belum punya akun? <Link href="/register">Daftar</Link>
       </p>
     </Card>
   );
