@@ -20,14 +20,12 @@ const Dosen = () => {
     const navigate = useNavigate();
     const { user } = useAuthStateContext();
 
-    // STATE
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
     const [sortBy, setSortBy] = useState("name");
     const [sortOrder, setSortOrder] = useState("asc");
     const [search, setSearch] = useState("");
 
-    // HOOK
     const {
         data: result = { data: [], total: 0 },
         isLoading: isLoadingDosen,
@@ -39,22 +37,18 @@ const Dosen = () => {
         _limit: limit,
     });
 
-    // DATA
     const { data: dosen } = result;
     const totalItems = result.total;
     const totalPages = Math.ceil(totalItems / limit);
 
-    // Mutation
     const mutationStore = useStoreDosen();
     const mutationUpdate = useUpdateDosen();
     const mutationDelete = useDeleteDosen();
 
-    // UI State
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEdit, setIsEdit] = useState(false); 
     const [form, setForm] = useState({ id: null, nip: "", name: "" });
 
-    // HANDLERS
     const handlePrev = () => setPage((prev) => Math.max(prev - 1, 1));
     const handleNext = () => setPage((prev) => Math.min(prev + 1, totalPages));
 

@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { confirmDelete, confirmUpdate } from "@/Utils/Helpers/SwalHelpers";
 import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 
-// Import API
 import { getAllMahasiswa, storeMahasiswa, updateMahasiswa, deleteMahasiswa } from "@/Utils/Apis/MahasiswaApi";
 import { getAllKelas } from "@/Utils/Apis/KelasApi";
 import { getAllMatkul } from "@/Utils/Apis/MatkulApi";
@@ -18,12 +17,10 @@ const Mahasiswa = () => {
   const navigate = useNavigate();
   const { user } = useAuthStateContext();
 
-  // --- STATE DATA ---
   const [mahasiswa, setMahasiswa] = useState([]);
   const [kelas, setKelas] = useState([]);
   const [mataKuliah, setMataKuliah] = useState([]);
   
-  // --- STATE PAGINATION & FILTER ---
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [sortBy, setSortBy] = useState("name"); 
@@ -31,12 +28,10 @@ const Mahasiswa = () => {
   const [search, setSearch] = useState("");
   const [totalItems, setTotalItems] = useState(0);
 
-  // --- STATE MODAL ---
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [form, setForm] = useState({ id: null, nim: "", name: "", max_sks: 0 });
 
-  // --- FETCH DATA (Dipanggil saat page/search/sort berubah) ---
   useEffect(() => {
     fetchData();
   }, [page, search, sortBy, sortOrder]);
@@ -51,7 +46,6 @@ const Mahasiswa = () => {
         _order: sortOrder
       };
 
-      // Request API Paralel
       const [resMhs, resKelas, resMatkul] = await Promise.all([
         getAllMahasiswa(mhsParams), 
         getAllKelas(),              
@@ -71,7 +65,6 @@ const Mahasiswa = () => {
 
   const totalPages = Math.ceil(totalItems / limit);
 
-  // --- LOGIC HITUNG SKS ---
   const getTotalSks = (mhsId) => {
     return kelas
       .filter((k) => k.mahasiswa_ids.includes(mhsId) || k.mahasiswa_ids.includes(String(mhsId)))
@@ -79,7 +72,6 @@ const Mahasiswa = () => {
       .reduce((a, b) => a + b, 0);
   };
 
-  // --- HANDLERS UI ---
   const handlePrev = () => setPage((prev) => Math.max(prev - 1, 1));
   const handleNext = () => setPage((prev) => Math.min(prev + 1, totalPages));
 

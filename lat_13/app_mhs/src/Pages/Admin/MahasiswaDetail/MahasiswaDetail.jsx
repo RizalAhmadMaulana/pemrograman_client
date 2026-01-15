@@ -4,7 +4,7 @@ import Heading from "@/Pages/Layouts/Components/Heading";
 import Button from "@/Pages/Layouts/Components/Button";
 import { useParams, useNavigate } from "react-router-dom";
 import { getMahasiswa } from "@/Utils/Apis/MahasiswaApi";
-import { getAllKelas } from "@/Utils/Apis/KelasApi"; // Ganti import
+import { getAllKelas } from "@/Utils/Apis/KelasApi";
 import { getAllMatkul } from "@/Utils/Apis/MatkulApi";
 import { toastError } from "@/Utils/Helpers/ToastHelpers";
 
@@ -12,7 +12,6 @@ const MahasiswaDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    // State
     const [mahasiswa, setMahasiswa] = useState(null);
     const [krsList, setKrsList] = useState([]);
     const [matkulList, setMatkulList] = useState([]);
@@ -22,19 +21,14 @@ const MahasiswaDetail = () => {
         const fetchAllData = async () => {
             try {
                 setLoading(true);
-                // 1. Ambil Data Mahasiswa
                 const resMhs = await getMahasiswa(id);
                 setMahasiswa(resMhs.data);
 
-                // 2. Ambil Semua Kelas (Untuk filter manual)
                 const resKelas = await getAllKelas();
                 
-                // 3. Ambil Master Matkul
                 const resMatkul = await getAllMatkul();
                 setMatkulList(resMatkul.data);
 
-                // 4. Filter Kelas yang diambil mahasiswa ini
-                // Perhatikan: ID di JSON bisa string/number, jadi convert ke String biar aman
                 const kelasDiambil = resKelas.data.filter(k => 
                     k.mahasiswa_ids.includes(parseInt(id)) || 
                     k.mahasiswa_ids.includes(String(id))
@@ -56,11 +50,9 @@ const MahasiswaDetail = () => {
         fetchAllData();
     }, [id]);
 
-    // --- HITUNG TOTAL SKS ---
     const calculateTotalSKS = () => {
         let total = 0;
         krsList.forEach((kelasItem) => {
-            // Cari matkul berdasarkan ID relasi
             const foundMatkul = matkulList.find(m => String(m.id) === String(kelasItem.mata_kuliah_id));
             if (foundMatkul) {
                 total += parseInt(foundMatkul.sks);
@@ -71,7 +63,6 @@ const MahasiswaDetail = () => {
 
     if (loading) return <Card><p className="text-center p-4">Memuat data...</p></Card>;
     
-    // Jika null, berarti ID tidak ada di database
     if (!mahasiswa) return (
         <Card>
             <p className="text-red-600 p-4 text-center font-bold">Data Mahasiswa Tidak Ditemukan</p>
@@ -85,7 +76,6 @@ const MahasiswaDetail = () => {
 
     return (
         <Card>
-            {/* Header */}
             <div className="flex justify-between items-center mb-6 border-b pb-4">
                 <div>
                     <Heading as="h2" className="text-left mb-1">Detail Mahasiswa</Heading>
@@ -94,7 +84,6 @@ const MahasiswaDetail = () => {
                 <Button onClick={() => navigate(-1)} size="sm" variant="secondary">&larr; Kembali</Button>
             </div>
             
-            {/* Info Mahasiswa */}
             <div className="bg-blue-50 p-4 rounded-lg mb-6 border border-blue-100">
                 <table className="w-full text-sm">
                     <tbody>
@@ -116,7 +105,6 @@ const MahasiswaDetail = () => {
                 </table>
             </div>
 
-            {/* Tabel KRS (Rencana Studi) */}
             <Heading as="h3" className="text-left text-lg mb-4">Kelas yang Diambil</Heading>
             
             <div className="overflow-x-auto border rounded-lg">
@@ -138,7 +126,6 @@ const MahasiswaDetail = () => {
                             </tr>
                         ) : (
                             krsList.map((item) => {
-                                // Cari info Matkul lagi
                                 const mkInfo = matkulList.find(m => String(m.id) === String(item.mata_kuliah_id));
                                 const namaMk = mkInfo ? mkInfo.name : "Unknown";
                                 const sks = mkInfo ? mkInfo.sks : "-";

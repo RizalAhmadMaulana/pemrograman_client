@@ -17,7 +17,7 @@ const TableMatkul = ({ data = [], onEdit, onDelete, onDetail }) => {
         {data.map((matkul, index) => (
           <tr key={matkul.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}>
             <td className="py-2 px-4">{matkul.kode}</td>
-            <td className="py-2 px-4">{matkul.name}</td> {/* REVISI: name */}
+            <td className="py-2 px-4">{matkul.name}</td>
             <td className="py-2 px-4">{matkul.sks}</td>
             <td className="py-2 px-4 text-center space-x-2">
               <Button size="sm" onClick={() => onDetail(matkul.id)}>Detail</Button>

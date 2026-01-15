@@ -28,7 +28,6 @@ const Dashboard = () => {
     totalMatkul: 0,
   });
 
-  // State untuk Data Chart
   const [dataKelasMhs, setDataKelasMhs] = useState([]);
   const [dataSksDist, setDataSksDist] = useState([]);
   const [dataDosenSks, setDataDosenSks] = useState([]);
@@ -39,7 +38,6 @@ const Dashboard = () => {
 
   const fetchData = async () => {
     try {
-      // 1. Ambil Semua Data Sekaligus
       const [resMhs, resDosen, resKelas, resMatkul] = await Promise.all([
         getAllMahasiswa(),
         getAllDosen(),
@@ -52,7 +50,6 @@ const Dashboard = () => {
       const kelas = resKelas.data;
       const matkul = resMatkul.data;
 
-      // 2. Set Statistik Sederhana (Card Atas)
       setStats({
         totalMahasiswa: mhs.length,
         totalDosen: dosen.length,
@@ -60,45 +57,33 @@ const Dashboard = () => {
         totalMatkul: matkul.length,
       });
 
-      // --- OLAH DATA UNTUK CHART ---
-
-      // CHART 1: Jumlah Mahasiswa per Kelas
-      // Format: { name: 'A11.4403', jumlah: 5 }
       const chart1Data = kelas.map((k) => ({
-        name: k.nama_kelas || k.kode_kelas, // Tampilkan Nama Kelas
-        jumlah: k.mahasiswa_ids ? k.mahasiswa_ids.length : 0, // Hitung isi array
+        name: k.nama_kelas || k.kode_kelas, 
+        jumlah: k.mahasiswa_ids ? k.mahasiswa_ids.length : 0, 
       }));
       setDataKelasMhs(chart1Data);
 
-      // CHART 2: Distribusi SKS Matkul (Pie Chart)
-      // Format: { name: '3 SKS', value: 10 }
       const sksGroups = {};
       matkul.forEach((m) => {
         const key = `${m.sks} SKS`;
         sksGroups[key] = (sksGroups[key] || 0) + 1;
       });
-      // Convert object ke array
       const chart2Data = Object.keys(sksGroups).map((key) => ({
         name: key,
         value: sksGroups[key],
       }));
       setDataSksDist(chart2Data);
 
-      // CHART 3: Total SKS Mengajar per Dosen
-      // Format: { name: 'Dr. Risa', total_sks: 6 }
       const chart3Data = dosen.map((d) => {
-        // Cari kelas yang diajar dosen ini
         const kelasAjar = kelas.filter((k) => String(k.dosen_id) === String(d.id));
         
-        // Hitung total SKS dari kelas tersebut
         const totalSks = kelasAjar.reduce((acc, curr) => {
-          // Cari matkul di kelas ini untuk tau SKS-nya
           const mk = matkul.find((m) => String(m.id) === String(curr.mata_kuliah_id));
           return acc + (mk ? parseInt(mk.sks) : 0);
         }, 0);
 
         return {
-          name: d.name || d.nama, // Handle nama dosen
+          name: d.name || d.nama,
           total_sks: totalSks,
         };
       });
@@ -109,14 +94,12 @@ const Dashboard = () => {
     }
   };
 
-  // Warna untuk Pie Chart
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-800">Dashboard Akademik</h1>
 
-      {/* --- BAGIAN 1: STATISTIC CARDS --- */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Total Mahasiswa" count={stats.totalMahasiswa} color="bg-blue-500" icon="🎓" />
         <StatCard title="Total Dosen" count={stats.totalDosen} color="bg-green-500" icon="👨‍🏫" />
@@ -124,10 +107,7 @@ const Dashboard = () => {
         <StatCard title="Mata Kuliah" count={stats.totalMatkul} color="bg-purple-500" icon="📚" />
       </div>
 
-      {/* --- BAGIAN 2: CHARTS ROW 1 --- */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        {/* CHART 1: Bar Chart (Mahasiswa per Kelas) */}
         <Card className="p-4">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Jumlah Mahasiswa per Kelas</h3>
           <div className="h-72 w-full">
@@ -144,7 +124,6 @@ const Dashboard = () => {
           </div>
         </Card>
 
-        {/* CHART 2: Pie Chart (Distribusi SKS) */}
         <Card className="p-4">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">Distribusi SKS Mata Kuliah</h3>
           <div className="h-72 w-full">
@@ -171,9 +150,6 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      {/* --- BAGIAN 3: CHARTS ROW 2 --- */}
-      
-      {/* CHART 3: Area Chart (Beban SKS Dosen) */}
       <Card className="p-4">
         <h3 className="text-lg font-semibold mb-4 text-gray-700">Total Beban SKS Mengajar Dosen</h3>
         <div className="h-72 w-full">
@@ -192,7 +168,6 @@ const Dashboard = () => {
   );
 };
 
-// Komponen Kecil untuk Card Statistik
 const StatCard = ({ title, count, color, icon }) => (
   <div className={`${color} text-white p-6 rounded-lg shadow-md flex items-center justify-between`}>
     <div>
